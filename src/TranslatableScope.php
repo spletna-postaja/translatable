@@ -1,5 +1,6 @@
 <?php namespace Laraplus\Data;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Database\Query\Expression;
@@ -34,7 +35,7 @@ class TranslatableScope implements Scope
         $this->i18nTable = $model->getI18nTable();
         $this->fallback = $model->getFallbackLocale();
 
-        if(!starts_with($this->table, 'laravel_reserved_')) {
+        if(!Str::startsWith($this->table, 'laravel_reserved_')) {
             $this->createJoin($builder, $model);
             $this->createWhere($builder, $model);
             $this->createSelect($builder, $model);
