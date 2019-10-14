@@ -1,10 +1,10 @@
-# Translatable Eloquent models (Laravel 5.2+)
+# Translatable Eloquent models (Laravel 6.0+)
 
-[![Build Status](https://travis-ci.org/laraplus/translatable.svg)](https://travis-ci.org/laraplus/translatable)
+[![Build Status](https://travis-ci.org/spletna-postaja/translatable.svg)](https://travis-ci.org/spletna-postaja/translatable.svg)
 
 This package provides a powerful and transparent way of managing multilingual models in Eloquent.
 
-It makes use of Laravel's 5.2 enhanced global scopes to join translated attributes to every query rather than utilizing
+It makes use of Laravel's 6 enhanced global scopes to join translated attributes to every query rather than utilizing
 relations as some alternative packages. As a result, only a single query is required to fetch translated attributes and
 there is no need to create separate models for translation tables, making this package easier to use.
 
@@ -20,6 +20,8 @@ there is no need to create separate models for translation tables, making this p
   * [Updating rows](#updating-rows)
   * [Deleting rows](#deleting-rows)
 * [Translations as a relation](#translations-as-a-relation)
+* [Author and maintenance](#author-and-maintenance)
+* [License](#licence)
 
 ## Quick demo
 
@@ -72,12 +74,13 @@ This package can be used within Laravel or Lumen applications as well as any oth
 database component https://github.com/illuminate/database. The package can be installed through composer:
 
 ```
-composer require laraplus/translatable
+composer require spletna-postaja/translatable
 ```
 
 ### Configuration in Laravel
 
-To configure the package, add a service provider to your ``app.php`` configuration file, under the ``providers`` key:
+The package will be auto-discovered in Laravel although you can still add a service provider to your
+ ``app.php`` configuration file, under the ``providers`` key:
 
 ```php
 'providers' => [
@@ -93,7 +96,7 @@ php artisan vendor:publish --provider="Laraplus\Data\TranslatableServiceProvider
 ```
 
 Open the configuration file to check all available settings:
-https://github.com/laraplus/translatable/blob/master/config/translatable.php
+https://github.com/spletna-postaja/translatable/blob/master/config/translatable.php
 
 ### Configuration outside Laravel
 
@@ -109,7 +112,7 @@ TranslatableConfig::fallbackLocaleGetter(function() {
 ```
 
 You can optionally adjust some other settings as well. To see all available options inspect Laravel's Service Provider:
-https://github.com/laraplus/translatable/blob/master/src/TranslatableServiceProvider.php
+https://github.com/spletna-postaja/translatable/blob/master/src/TranslatableServiceProvider.php
 
 ## Creating migrations
 
@@ -187,7 +190,7 @@ class Post extends Model
 
 To select rows from your translatable models, you can use all of the usual Eloquent query helpers. Translatable
 attributes will be returned in your current locale. To learn more about how to configure localization in Laravel,
-refer to the official documentation: https://laravel.com/docs/5.2/localization
+refer to the official documentation: https://laravel.com/docs/6.0/localization
 
 ```php
 Post::where('active', 1)->orderBy('title')->get();
@@ -258,8 +261,8 @@ a single table:
 
 ```php
 Post::create([
-    'title' => 'My title',
-    'published_at' => Carbon::now()
+    'title'        => 'My title',
+    'published_at' => Carbon::now(),
 ]);
 ```
 
@@ -267,13 +270,13 @@ If you want to store the record in an alternative locale, you may use the ``crea
 
 ```php
 Post::createInLocale('de', [
-    'title' => 'Title in DE',
-    'published_at' => Carbon::now()
+    'title'        => 'Title in DE',
+    'published_at' => Carbon::now(),
 ]);
 ```
 
-Often you will need to store a new record together with all translations. To do that, you may list translatable attributes
-as a second argument of the ``create()`` method:
+Often you will need to store a new record together with all translations. To do that, you may list translatable 
+attributes as a second argument of the ``create()`` method:
 
 ```php
 Post::create([
@@ -352,7 +355,7 @@ which will help us do just that:
 ```php
 $user = $user->first();
 
-foreach($user->translations as $translation) {
+foreach ($user->translations as $translation) {
     echo "Title in {$translation->locale}: {$translation->title}";
 }
 ```
@@ -375,3 +378,17 @@ User::withAllTranslations()->get();
 
 **Notice: there is currently limited support for updating and inserting new records using the relation. Instead you
 can use the helpers described above.**
+
+## Author and maintenance
+
+Author of this project is [Anže Časar](https://github.com/acasar)
+
+This project is supported and maintained by [Spletna postaja](https://spletna-postaja.com/), a web development company.
+
+Ta projekt podpira in vzdržuje [Spletna postaja](https://spletna-postaja.com/), podjetje za razvoj in [izdelavo spletnih strani](https://spletna-postaja.com/izdelava-spletnih-strani) in [izdelavo spletnih trgovin](https://spletna-postaja.com/izdelava-spletnih-trgovin).
+
+## License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+[<img src="https://img.shields.io/packagist/l/doctrine/orm.svg" alt="MIT License">](LICENSE)
