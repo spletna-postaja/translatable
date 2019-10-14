@@ -1,5 +1,5 @@
 {
-  "name": "laraplus/translatable",
+  "name": "spletna-postaja/translatable",
   "description": "Translatable eloquent models.",
   "keywords": ["translatable", "eloquent", "laravel", "model", "translate", "i18n"],
   "license": "MIT",
@@ -7,6 +7,10 @@
     {
       "name": "Anže Časar",
       "email": "anze.casar@gmail.com"
+    },
+    {
+      "name": "Spletna Postaja",
+      "email": "developer@spletna-postaja.com"
     }
   ],
   "require": {
