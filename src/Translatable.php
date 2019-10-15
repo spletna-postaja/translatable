@@ -80,7 +80,7 @@ trait Translatable
     {
         $model = new static;
 
-        return static::unguarded(function () use ($model, $attributes, $translations) {
+        return static::unguarded(function() use ($model, $attributes, $translations) {
             return $model->create($attributes, $translations);
         });
     }
@@ -97,7 +97,7 @@ trait Translatable
     {
         $model = new static;
 
-        return static::unguarded(function () use ($locale, $model, $attributes, $translations) {
+        return static::unguarded(function() use ($locale, $model, $attributes, $translations) {
             return $model->createInLocale($locale, $attributes, $translations);
         });
     }
@@ -157,7 +157,7 @@ trait Translatable
      */
     public function forceSaveTranslations(array $translations)
     {
-        return static::unguarded(function () use ($translations) {
+        return static::unguarded(function() use ($translations) {
             return $this->saveTranslations($translations);
         });
     }
@@ -187,7 +187,7 @@ trait Translatable
      */
     public function forceSaveTranslation($locale, array $attributes)
     {
-        return static::unguarded(function () use ($locale, $attributes) {
+        return static::unguarded(function() use ($locale, $attributes) {
             return $this->saveTranslation($locale, $attributes);
         });
     }

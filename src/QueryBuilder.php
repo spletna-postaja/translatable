@@ -58,7 +58,7 @@ class QueryBuilder extends Builder
     {
         $column = $this->qualifyColumns(is_array($column) ? $column : func_get_args());
 
-        $this->columns = array_merge((array)$this->columns, $column);
+        $this->columns = array_merge((array) $this->columns, $column);
 
         return $this;
     }
@@ -282,8 +282,7 @@ class QueryBuilder extends Builder
             $suffix = $this->model->getTranslationTableSuffix();
 
             return Str::endsWith($alias, $suffix) ?
-                "{$table}{$fallback}.{$field}" :
-                "{$table}{$suffix}{$fallback}.{$field}";
+                "{$table}{$fallback}.{$field}" : "{$table}{$suffix}{$fallback}.{$field}";
         }
 
         return "{$alias}{$fallback}.{$column}";
