@@ -43,7 +43,7 @@ class TestQuery extends TestCase
         $expected =
             'select "users".*, "users_i18n"."bio" from "users" '.
             'left join "users_i18n" on "users_i18n"."user_id" = "users"."id" and "users_i18n"."locale" = ? '.
-            'where "users"."id" = ?';
+            'where "users"."id" = ? and "users"."deleted_at" is null';
 
         $this->assertEquals($post->user()->toSql(), $expected);
         $this->assertEquals(['en', 1], $post->user()->getBindings());
