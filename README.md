@@ -1,14 +1,22 @@
-# Translatable Eloquent models (Laravel 6.0+)
+# Translatable Eloquent models
 
-[![Build Status](https://travis-ci.org/spletna-postaja/translatable.svg)](https://travis-ci.org/spletna-postaja/translatable.svg)
+[![Total Downloads](https://img.shields.io/packagist/dt/spletna-postaja/translatable.svg?label=Downloads&style=flat-square&cacheSeconds=600)](https://packagist.org/packages/spletna-postaja/translatable)
+[![Build Status](https://img.shields.io/travis/spletna-postaja/translatable/master?label=Build&style=flat-square&cacheSeconds=600)](https://travis-ci.org/spletna-postaja/translatable) 
+[![CircleCI](https://img.shields.io/circleci/build/github/spletna-postaja/translatable/master.svg?label=CircleCI&style=flat-square&cacheSeconds=600)](https://circleci.com/gh/spletna-postaja/translatable) 
+[![StyleCI](https://github.styleci.io/repos/215050904/shield?branch=master)](https://github.styleci.io/repos/215050904) 
+[![ScrutinizerCI](https://img.shields.io/scrutinizer/quality/g/spletna-postaja/translatable/master.svg?label=ScrutinizerCI&style=flat-square&cacheSeconds=600)](https://scrutinizer-ci.com/g/spletna-postaja/translatable/) 
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/spletna-postaja/translatable/master.svg?label=Coverage&style=flat-square&cacheSeconds=600)](https://scrutinizer-ci.com/g/spletna-postaja/translatable/) 
+[![Latest Version](http://img.shields.io/packagist/v/spletna-postaja/translatable.svg?label=Release&style=flat-square&cacheSeconds=600)](https://packagist.org/packages/spletna-postaja/translatable) 
+[![MIT License](https://img.shields.io/github/license/spletna-postaja/translatable.svg?label=License&color=blue&style=flat-square&cacheSeconds=600)](https://github.com/spletna-postaja/translatable/blob/master/LICENSE)
 
 This package provides a powerful and transparent way of managing multilingual models in Eloquent.
 
-It makes use of Laravel's 6 enhanced global scopes to join translated attributes to every query rather than utilizing
+It makes use of Laravel's enhanced global scopes to join translated attributes to every query rather than utilizing
 relations as some alternative packages. As a result, only a single query is required to fetch translated attributes and
 there is no need to create separate models for translation tables, making this package easier to use.
 
 * [Quick demo](#quick-demo)
+* [Versions](#versions)
 * [Installation](#installation)
   * [Configuration in Laravel](#configuration-in-laravel)
   * [Configuration outside Laravel](#configuration-outside-laravel)
@@ -26,7 +34,7 @@ there is no need to create separate models for translation tables, making this p
 ## Quick demo
 
 To enable translations in your models, you first need to prepare your schema according to the
-[convention](#creating-migrations). Then you can pull in the ``Translatable`` trait:
+[convention](#creating-migrations). After that you can pull in the ``Translatable`` trait:
 
 ```php
 use Laraplus\Data\Translatable;
@@ -52,7 +60,7 @@ Post::translateInto('de')->withFallback('en')->first();
 $post->title; // title in 'de' if available, otherwise in 'en'
 ```
 
-Since translations are joined to the query, it is also very easy to filter and order by translated attributes:
+Since translations are joined to the query it's also very easy to filter and sort by translated attributes:
 
 ```php
 Post::where('body', 'LIKE', '%Laravel%')->orderBy('title', 'desc');
@@ -67,6 +75,12 @@ Post::onlyTranslated()->all()
 Multiple [helpers](#crud-operations) are available for all basic CRUD operations. For all available options, read the
 [full documentation](#crud-operations) below.
 
+## Versions
+
+| Package | Laravel | PHP |
+| :--- | :--- | :--- |
+| **v1.0.0 - v1.0.22** | `5.2.* - 5.8.*` | `5.6.* / 7.0.* - 7.2.*` |
+| **v2.0.0 - v2.0.*** | `>=6.0` | `>=7.3.*` |
 
 ## Installation
 
@@ -79,17 +93,17 @@ composer require spletna-postaja/translatable
 
 ### Configuration in Laravel
 
-The package will be auto-discovered in Laravel although you can still add a service provider to your
- ``app.php`` configuration file, under the ``providers`` key:
+The package will be auto-discovered in Laravel although you can still manually add a service provider to your
+ ``/config/app.php`` configuration file, under the ``providers`` key:
 
 ```php
 'providers' => [
-    // other providers
-    Laraplus\Data\TranslatableServiceProvider::class
-];
+    // Other providers
+    Laraplus\Data\TranslatableServiceProvider::class,
+],
 ```
 
-Optionally you can also configure some other options by publishing the ``translatable.php`` configuration file:
+Optionally you can configure some other options by publishing the ``translatable.php`` configuration file:
 
 ```
 php artisan vendor:publish --provider="Laraplus\Data\TranslatableServiceProvider" --tag="config"
@@ -104,10 +118,11 @@ When using this package outside Laravel, you can configure it using ``Translatab
 
 ```php
 TranslatableConfig::currentLocaleGetter(function() {
-    // return the current locale of the application
+    // Return the current locale of the application
 });
+
 TranslatableConfig::fallbackLocaleGetter(function() {
-    // return the fallback locale of the application
+    // Return the fallback locale of the application
 });
 ```
 
@@ -141,11 +156,11 @@ Schema::create('posts_i18n', function(Blueprint $table)
 });
 ```
 
-By default, translation tables must end with ``_i18`` suffix but that can be changed in the configuration file. Also,
-translation table must contain a foreign key to the parent table as well as a ``locale`` field (also configurable) 
-which will store the locale of translated attributes. Incrementing keys are not allowed on translation models. A
-composite key containing ``locale`` and foreign key reference to the parent model needs to be defined instead.
-Optionally you may also define foreign key constraints, but the package will work without them as well.
+By default, translation tables must end with ``_i18n`` suffix although this can be changed in the previously mentioned 
+configuration file. Translation table must always contain a foreign key to the parent table as well as a ``locale`` 
+field (also configurable) which will store the locale of translated attributes. Incrementing keys are not allowed on
+translation models. A composite key containing ``locale`` and foreign key reference to the parent model needs to be 
+defined instead. Optionally you may define foreign key constraints, but the package will work without them as well.
 
 **Important: make sure that no translated attributes are named the same as any non translated attribute since that will
 break the queries. This also applies to timestamps (which should not be added to the translation tables but to primary
@@ -153,7 +168,7 @@ tables only) and for incrementing keys (not allowed on translation tables).**
 
 ## Configuring models
 
-To make your models aware of translated attributes you need to pull in the ``Translatable`` trait:
+To make your models aware of the translated attributes you need to pull in the ``Translatable`` trait:
 
 ```php
 use Laraplus\Data\Translatable;
@@ -165,12 +180,12 @@ class Post extends Model
 }
 ```
 
-Optionally you may also define an array of ``$translatable`` attributes, but the package is designed to work without it.
+Optionally you may define an array of ``$translatable`` attributes, but the package is designed to work without it.
 In that case translatable attributes will be automatically determined from the database schema and cached indefinitely.
-If you are using the cache approach don't forget to clear the cache every time the schema changes.
+If you are using the cache approach, don't forget to clear the cache every time the schema changes.
 
 By default, if the model is not translated into the current locale, fallback translations will be selected instead.
-If no translations are available, null will be returned for all translatable attributes. If you wish to change that
+If no translations are available, ``null`` will be returned for all translatable attributes. If you wish to change that
 behavior you can either modify the ``translatable.php`` configuration file or adjust the behavior on "per model" basis:
 
 ```php
@@ -190,7 +205,7 @@ class Post extends Model
 
 To select rows from your translatable models, you can use all of the usual Eloquent query helpers. Translatable
 attributes will be returned in your current locale. To learn more about how to configure localization in Laravel,
-refer to the official documentation: https://laravel.com/docs/6.0/localization
+please refer to the official documentation: https://laravel.com/docs/6.0/localization
 
 ```php
 Post::where('active', 1)->orderBy('title')->get();
@@ -198,7 +213,7 @@ Post::where('active', 1)->orderBy('title')->get();
 
 #### Query helpers
 
-The query above will by default also return records that don't have any translations in the current or fallback locale.
+The above query will by default also return records that don't have any translations in the current or fallback locale.
 To return only translated rows, you can change the ``defaults.only_translated`` config option to ``true``, or use the
 ``onlyTranslated()`` query helper:
 
@@ -213,7 +228,7 @@ Sometimes you may want to disable fallback translations altogether. To do this, 
 Post::withoutFallback()->get();
 ```
 
-Both of the helpers above also have their opposite forms: ``withUntranslated()`` and ``withFallback()``. You may also
+Both of the helpers above have their opposite forms: ``withUntranslated()`` and ``withFallback()``. You may also
 provide an optional ``$locale`` argument to the ``withFallback()`` helper to change the default fallback locale:
 
 ```php
@@ -221,31 +236,31 @@ Post::withUntranslated()->withFallback()->get();
 Post::withUntranslated()->withFallback('de')->get();
 ```
 
-Sometimes you may wish to retrieve translations in a locale different from the current one. To achieve that, you may use
-the ``translateInto($locale)`` helper:
+Sometimes you may wish to retrieve translations in a locale different from the current one. To achieve that, you may
+use the ``translateInto($locale)`` helper:
 
 ```php
 Post::translateInto('de')->get();
 ```
 
-In case you don't need the translated attributes at all, you may use the ```withoutTranslations()``` helper, which will
-remove the translatable global scope from your query
+In case you do not need the translated attributes at all, you may use the ```withoutTranslations()``` helper, which 
+will remove the translatable global scope from your query
 
 ```php
 Post::withoutTranslations()->get();
 ```
 
-#### Filtering and ordering by translated attributes
+#### Filtering and sorting by translated attributes
 
 Often you may wish to filter query results by translated attributes. This package allows you to use all of the usual
 Eloquent ``where`` clauses normally. This will work even with fallback translations since all of the columns within
-where clauses will be automatically wrapped in ``ifnull`` statements and prefixed with the appropriate table names:
+where clauses will be automatically wrapped in the ``ifnull`` statements and prefixed with the appropriate table names:
 
 ```php
 Post::where('title', 'LIKE', '%Laravel%')->orWhere('description', 'LIKE', '%Laravel%')->get();
 ```
 
-The same is true for ``order by`` clauses, which will also be automatically transformed to the correct format:
+The same logic applies for ``order by`` clauses, which will also be automatically transformed to the correct format:
 
 ```php
 Post::orderBy('title')->get();
@@ -256,8 +271,8 @@ we do not parse whereRaw expressions. Instead you will need to include the appro
 
 ### Inserting rows
 
-When creating new models in the current locale, you may use the normal Laravel syntax, as if you were inserting rows in
-a single table:
+When creating new models in the current locale, you may use the normal Laravel syntax, as if you were inserting rows
+into a single table:
 
 ```php
 Post::create([
@@ -287,7 +302,7 @@ Post::create([
 ]);
 ```
 
-All of the helpers above also have their ``force`` forms that let you bust the mass assignment protection.
+All of the above helpers also have their ``force`` forms that let you bust the mass assignment protection.
 
 ```php
 Post::forceCreate([/*attributes*/], [/*translations*/]);
@@ -300,6 +315,7 @@ Updating records in the current locale is as easy as if you were updating a sing
 
 ```php
 $user = User::first();
+
 $user->title = 'New title';
 $user->save();
 ```
@@ -309,9 +325,11 @@ that will either update an existing translation or create a new one (if it doesn
 
 ```php
 $user = User::first();
+
 $user->saveTranslation('en', [
     'title' => 'Title in EN'
 ]);
+
 $user->saveTranslation('de', [
     'title' => 'Title in DE'
 ]);
@@ -338,6 +356,7 @@ the parent row:
 
 ```php
 $user = User::first();
+
 $user->delete();
 ```
 
@@ -349,8 +368,8 @@ User::where('published_at', '>', Carbon::now())->delete();
 
 ## Translations as a relation
 
-Sometimes you may wish to retrieve all translations of a model. Luckily the package implements a ``hasMany`` relation
-which will help us do just that:
+Sometimes you may wish to retrieve all translations of a certain model. Luckily the package implements a ``hasMany`` 
+relation which will help you do just that:
 
 ```php
 $user = $user->first();
@@ -391,4 +410,4 @@ Ta projekt podpira in vzdržuje [Spletna postaja](https://spletna-postaja.com/),
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-[<img src="https://img.shields.io/packagist/l/doctrine/orm.svg" alt="MIT License">](LICENSE)
+[![MIT License](https://img.shields.io/github/license/spletna-postaja/translatable.svg?label=License&color=blue&style=flat-square&cacheSeconds=600)](https://github.com/spletna-postaja/translatable/blob/master/LICENSE)
