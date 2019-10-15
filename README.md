@@ -5,7 +5,7 @@
 [![CircleCI](https://img.shields.io/circleci/build/github/spletna-postaja/translatable/master.svg?label=CircleCI&style=flat-square&cacheSeconds=600)](https://circleci.com/gh/spletna-postaja/translatable) 
 [![StyleCI](https://github.styleci.io/repos/215050904/shield?branch=master)](https://github.styleci.io/repos/215050904) 
 [![ScrutinizerCI](https://img.shields.io/scrutinizer/quality/g/spletna-postaja/translatable/master.svg?label=ScrutinizerCI&style=flat-square&cacheSeconds=600)](https://scrutinizer-ci.com/g/spletna-postaja/translatable/) 
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/spletna-postaja/translatable/master.svg?label=Coverage&style=flat-square&cacheSeconds=600)](https://scrutinizer-ci.com/g/spletna-postaja/translatable/) 
+[![GitHub issues](https://img.shields.io/github/issues/spletna-postaja/translatable?label=Issues&style=flat-square)](https://github.com/spletna-postaja/translatable/issues) 
 [![Latest Version](http://img.shields.io/packagist/v/spletna-postaja/translatable.svg?label=Release&style=flat-square&cacheSeconds=600)](https://packagist.org/packages/spletna-postaja/translatable) 
 [![MIT License](https://img.shields.io/github/license/spletna-postaja/translatable.svg?label=License&color=blue&style=flat-square&cacheSeconds=600)](https://github.com/spletna-postaja/translatable/blob/master/LICENSE)
 
@@ -400,11 +400,13 @@ can use the helpers described above.**
 
 ## Author and maintenance
 
-Author of this project is [Anže Časar](https://github.com/acasar)
+Author and lead developer of this project is [Anže Časar](https://github.com/acasar).
 
 This project is supported and maintained by [Spletna postaja](https://spletna-postaja.com/), a web development company.
 
 Ta projekt podpira in vzdržuje [Spletna postaja](https://spletna-postaja.com/), podjetje za razvoj in [izdelavo spletnih strani](https://spletna-postaja.com/izdelava-spletnih-strani) in [izdelavo spletnih trgovin](https://spletna-postaja.com/izdelava-spletnih-trgovin).
+
+[![Twitter](https://img.shields.io/twitter/url?label=Tweet%20about%20this%20project&style=social&url=https%3A%2F%2Fgithub.com%2Fspletna-postaja%2Ftranslatable)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fspletna-postaja%2Ftranslatable)
 
 ## License
 
