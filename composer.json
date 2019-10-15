@@ -1,16 +1,25 @@
 {
   "name": "spletna-postaja/translatable",
-  "description": "Translatable eloquent models.",
+  "description": "Translatable Eloquent models.",
   "keywords": ["translatable", "eloquent", "laravel", "model", "translate", "i18n"],
   "license": "MIT",
   "authors": [
     {
       "name": "Anže Časar",
-      "email": "anze.casar@gmail.com"
+      "email": "anze.casar@gmail.com",
+      "role": "Lead Developer"
     },
     {
-      "name": "Spletna Postaja",
-      "email": "developer@spletna-postaja.com"
+      "name": "Spletna postaja",
+      "email": "razvijalec@spletna-postaja.com",
+      "homepage": "https://www.spletna-postaja.com",
+      "role": "Maintainer"
+    },
+    {
+      "name": "Blaž Oražem",
+      "email": "blaz@orazem.si",
+      "homepage": "https://www.orazem.si",
+      "role": "Developer"
     }
   ],
   "require": {
