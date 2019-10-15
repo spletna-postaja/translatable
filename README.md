@@ -1,13 +1,13 @@
 # Translatable Eloquent models
 
-[![Total Downloads](https://img.shields.io/packagist/dt/spletna-postaja/translatable.svg?label=Downloads&style=flat-square&cacheSeconds=600)](https://packagist.org/packages/spletna-postaja/translatable)
+[![Total Downloads](https://img.shields.io/packagist/dt/spletna-postaja/translatable?label=Downloads&style=flat-square&cacheSeconds=600)](https://packagist.org/packages/spletna-postaja/translatable)
 [![Build Status](https://img.shields.io/travis/spletna-postaja/translatable/master?label=Build&style=flat-square&cacheSeconds=600)](https://travis-ci.org/spletna-postaja/translatable) 
-[![CircleCI](https://img.shields.io/circleci/build/github/spletna-postaja/translatable/master.svg?label=CircleCI&style=flat-square&cacheSeconds=600)](https://circleci.com/gh/spletna-postaja/translatable) 
+[![CircleCI](https://img.shields.io/circleci/build/github/spletna-postaja/translatable/master?label=CircleCI&style=flat-square&cacheSeconds=600)](https://circleci.com/gh/spletna-postaja/translatable) 
 [![StyleCI](https://github.styleci.io/repos/215050904/shield?branch=master)](https://github.styleci.io/repos/215050904) 
-[![ScrutinizerCI](https://img.shields.io/scrutinizer/quality/g/spletna-postaja/translatable/master.svg?label=ScrutinizerCI&style=flat-square&cacheSeconds=600)](https://scrutinizer-ci.com/g/spletna-postaja/translatable/) 
+[![ScrutinizerCI](https://img.shields.io/scrutinizer/quality/g/spletna-postaja/translatable/master?label=ScrutinizerCI&style=flat-square&cacheSeconds=600)](https://scrutinizer-ci.com/g/spletna-postaja/translatable/) 
 [![GitHub issues](https://img.shields.io/github/issues/spletna-postaja/translatable?label=Issues&style=flat-square)](https://github.com/spletna-postaja/translatable/issues) 
-[![Latest Version](http://img.shields.io/packagist/v/spletna-postaja/translatable.svg?label=Release&style=flat-square&cacheSeconds=600)](https://packagist.org/packages/spletna-postaja/translatable) 
-[![MIT License](https://img.shields.io/github/license/spletna-postaja/translatable.svg?label=License&color=blue&style=flat-square&cacheSeconds=600)](https://github.com/spletna-postaja/translatable/blob/master/LICENSE)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/spletna-postaja/translatable?label=Release&style=flat-square&cacheSeconds=600)](https://github.com/spletna-postaja/translatable)
+[![MIT License](https://img.shields.io/github/license/spletna-postaja/translatable?label=License&color=blue&style=flat-square&cacheSeconds=600)](https://github.com/spletna-postaja/translatable/blob/master/LICENSE)
 
 This package provides a powerful and transparent way of managing multilingual models in Eloquent.
 
@@ -412,4 +412,4 @@ Ta projekt podpira in vzdržuje [Spletna postaja](https://spletna-postaja.com/),
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-[![MIT License](https://img.shields.io/github/license/spletna-postaja/translatable.svg?label=License&color=blue&style=flat-square&cacheSeconds=600)](https://github.com/spletna-postaja/translatable/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/github/license/spletna-postaja/translatable?label=License&color=blue&style=flat-square&cacheSeconds=600)](https://github.com/spletna-postaja/translatable/blob/master/LICENSE)
