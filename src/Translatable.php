@@ -1,4 +1,6 @@
-<?php namespace Laraplus\Data;
+<?php
+
+namespace Laraplus\Data;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -80,7 +82,7 @@ trait Translatable
     {
         $model = new static;
 
-        return static::unguarded(function() use ($model, $attributes, $translations) {
+        return static::unguarded(function () use ($model, $attributes, $translations) {
             return $model->create($attributes, $translations);
         });
     }
@@ -97,7 +99,7 @@ trait Translatable
     {
         $model = new static;
 
-        return static::unguarded(function() use ($locale, $model, $attributes, $translations) {
+        return static::unguarded(function () use ($locale, $model, $attributes, $translations) {
             return $model->createInLocale($locale, $attributes, $translations);
         });
     }
@@ -111,7 +113,7 @@ trait Translatable
      */
     public function fresh($with = [])
     {
-        if (!$this->exists) {
+        if (! $this->exists) {
             return null;
         }
 
@@ -157,7 +159,7 @@ trait Translatable
      */
     public function forceSaveTranslations(array $translations)
     {
-        return static::unguarded(function() use ($translations) {
+        return static::unguarded(function () use ($translations) {
             return $this->saveTranslations($translations);
         });
     }
@@ -187,7 +189,7 @@ trait Translatable
      */
     public function forceSaveTranslation($locale, array $attributes)
     {
-        return static::unguarded(function() use ($locale, $attributes) {
+        return static::unguarded(function () use ($locale, $attributes) {
             return $this->saveTranslation($locale, $attributes);
         });
     }
@@ -203,7 +205,7 @@ trait Translatable
      */
     public function fill(array $attributes)
     {
-        if (!isset(static::$i18nAttributes[$this->getTable()])) {
+        if (! isset(static::$i18nAttributes[$this->getTable()])) {
             $this->initTranslatableAttributes();
         }
 
@@ -231,7 +233,7 @@ trait Translatable
      */
     protected function getTranslatableAttributesFromSchema()
     {
-        if ((!$con = $this->getConnection()) || (!$builder = $con->getSchemaBuilder())) {
+        if ((! $con = $this->getConnection()) || (! $builder = $con->getSchemaBuilder())) {
             return [];
         }
 
@@ -258,7 +260,7 @@ trait Translatable
     {
         $found = $this->translations->where($this->getLocaleKey(), $locale)->first();
 
-        if (!$found && $this->shouldFallback($locale)) {
+        if (! $found && $this->shouldFallback($locale)) {
             return $this->translate($this->getFallbackLocale());
         }
 
@@ -292,7 +294,7 @@ trait Translatable
         $foreignKey = $this->getForeignKey();
         $instance = $this->translationModel();
 
-        return new HasMany($instance->newQuery(), $this, $instance->getTable() . '.' . $foreignKey, $localKey);
+        return new HasMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignKey, $localKey);
     }
 
     /**
@@ -323,7 +325,7 @@ trait Translatable
      */
     public function translatableAttributes()
     {
-        if (!isset(static::$i18nAttributes[$this->getTable()])) {
+        if (! isset(static::$i18nAttributes[$this->getTable()])) {
             return [];
         }
 
@@ -426,7 +428,7 @@ trait Translatable
      */
     public function getOnlyTranslated()
     {
-        if (!is_null($this->overrideOnlyTranslated)) {
+        if (! is_null($this->overrideOnlyTranslated)) {
             return $this->overrideOnlyTranslated;
         }
 
@@ -458,7 +460,7 @@ trait Translatable
      */
     public function getWithFallback()
     {
-        if (!is_null($this->overrideWithFallback)) {
+        if (! is_null($this->overrideWithFallback)) {
             return $this->overrideWithFallback;
         }
 
@@ -486,7 +488,7 @@ trait Translatable
      */
     public function getI18nTable()
     {
-        return $this->getTable() . $this->getTranslationTableSuffix();
+        return $this->getTable().$this->getTranslationTableSuffix();
     }
 
     /**
@@ -508,7 +510,7 @@ trait Translatable
      */
     public function shouldFallback($locale = null)
     {
-        if (!$this->getWithFallback() || !$this->getFallbackLocale()) {
+        if (! $this->getWithFallback() || ! $this->getFallbackLocale()) {
             return false;
         }
 
@@ -552,7 +554,7 @@ trait Translatable
     {
         $dirty = parent::getDirty();
 
-        if (!$this->localeChanged) {
+        if (! $this->localeChanged) {
             return $dirty;
         }
 

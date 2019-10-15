@@ -1,4 +1,6 @@
-<?php namespace Laraplus\Data;
+<?php
+
+namespace Laraplus\Data;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
@@ -8,7 +10,7 @@ class TranslationModel extends Eloquent
     /**
      * Translation model does not include timestamps by default.
      *
-     * @var boolean
+     * @var bool
      */
     public $timestamps = false;
 

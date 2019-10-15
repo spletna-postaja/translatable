@@ -117,7 +117,7 @@ class TestCRUD extends IntegrationTestCase
         ]);
 
         Post::where('title', 'Lorem ipsum')->update([
-            'title' => 'Lorem ipsum 2'
+            'title' => 'Lorem ipsum 2',
         ]);
 
         $this->assertEquals('Lorem ipsum 2', Post::find(1)->title);

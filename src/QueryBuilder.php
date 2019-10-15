@@ -1,4 +1,6 @@
-<?php namespace Laraplus\Data;
+<?php
+
+namespace Laraplus\Data;
 
 use Closure;
 use Illuminate\Support\Str;
@@ -74,7 +76,7 @@ class QueryBuilder extends Builder
     protected function qualifyColumns($columns)
     {
         foreach ($columns as &$column) {
-            if (!in_array($column, $this->model->translatableAttributes())) {
+            if (! in_array($column, $this->model->translatableAttributes())) {
                 continue;
             }
 
@@ -158,7 +160,7 @@ class QueryBuilder extends Builder
         // passed to the method, we will assume that the operator is an equals sign
         // and keep going. Otherwise, we'll require the operator to be passed in.
         if (func_num_args() == 2) {
-            list($value, $operator) = [$operator, '='];
+            [$value, $operator] = [$operator, '='];
         } elseif ($this->invalidOperatorAndValue($operator, $value)) {
             throw new InvalidArgumentException('Illegal operator and value combination.');
         }
@@ -166,8 +168,8 @@ class QueryBuilder extends Builder
         // If the given operator is not found in the list of valid operators we will
         // assume that the developer is just short-cutting the '=' operators and
         // we will set the operators to '=' and set the values appropriately.
-        if (!in_array(strtolower($operator), $this->operators, true)) {
-            list($value, $operator) = [$operator, '='];
+        if (! in_array(strtolower($operator), $this->operators, true)) {
+            [$value, $operator] = [$operator, '='];
         }
 
         $fallbackColumn = $this->qualifyTranslationColumn($column, true);
@@ -176,7 +178,7 @@ class QueryBuilder extends Builder
         // Finally we'll check whether we need to consider fallback translations. In
         // that case we need to create a complex "ifnull" clause, otherwise we can
         // just prepend the translation alias and add the where clause normally.
-        if (!$this->model->shouldFallback() || $column instanceof Closure) {
+        if (! $this->model->shouldFallback() || $column instanceof Closure) {
             return $this->where($column, $operator, $value, $boolean);
         }
 
@@ -213,7 +215,7 @@ class QueryBuilder extends Builder
      */
     public function whereSubQuery($column, $query, $boolean = 'and')
     {
-        list($type, $operator) = ['Sub', 'in'];
+        [$type, $operator] = ['Sub', 'in'];
 
         $this->wheres[] = compact('type', 'column', 'operator', 'query', 'boolean');
         $this->addBinding($query->getBindings(), 'where');
@@ -255,7 +257,7 @@ class QueryBuilder extends Builder
         $fallbackColumn = $this->qualifyTranslationColumn($column, true);
         $column = $this->qualifyTranslationColumn($column);
 
-        if (!$this->model->shouldFallback()) {
+        if (! $this->model->shouldFallback()) {
             return $this->orderBy($column, $direction);
         }
 
@@ -278,7 +280,7 @@ class QueryBuilder extends Builder
         $fallback = $fallback ? '_fallback' : '';
 
         if (Str::contains($column, '.')) {
-            list($table, $field) = explode('.', $column);
+            [$table, $field] = explode('.', $column);
             $suffix = $this->model->getTranslationTableSuffix();
 
             return Str::endsWith($alias, $suffix) ?
@@ -308,14 +310,14 @@ class QueryBuilder extends Builder
         } elseif ($this->grammar instanceof PostgresGrammar) {
             $ifNull = 'coalesce';
         } else {
-            throw new \Exception('Cannot compile IFNULL statement for grammar ' . get_class($this->grammar));
+            throw new \Exception('Cannot compile IFNULL statement for grammar '.get_class($this->grammar));
         }
 
         $primary = $this->grammar->wrap($primary);
         $fallback = $this->grammar->wrap($fallback);
-        $alias = $alias ? ' as ' . $this->grammar->wrap($alias) : '';
+        $alias = $alias ? ' as '.$this->grammar->wrap($alias) : '';
 
-        return "{$ifNull}($primary, $fallback)" . $alias;
+        return "{$ifNull}($primary, $fallback)".$alias;
     }
 
     /**

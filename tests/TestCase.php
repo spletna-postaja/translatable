@@ -12,7 +12,7 @@ abstract class TestCase extends PHPUnit\Framework\TestCase
         $capsule->addConnection([
             'driver'   => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => ''
+            'prefix'   => '',
         ]);
 
         $capsule->setAsGlobal();
@@ -27,6 +27,6 @@ abstract class TestCase extends PHPUnit\Framework\TestCase
             return 'en';
         });
 
-        require_once __DIR__ . '/stubs/Post.php';
+        require_once __DIR__.'/stubs/Post.php';
     }
 }
