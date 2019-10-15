@@ -13,6 +13,7 @@ abstract class IntegrationTestCase extends TestCase
             $table->increments('id');
             $table->string('name');
             $table->integer('age')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -63,6 +64,9 @@ abstract class IntegrationTestCase extends TestCase
         $this->schema()->drop('users_i18n');
         $this->schema()->drop('posts');
         $this->schema()->drop('posts_i18n');
+        $this->schema()->drop('tags');
+        $this->schema()->drop('tags_i18n');
+        $this->schema()->drop('post_tag');
     }
 
 

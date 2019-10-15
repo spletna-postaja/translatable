@@ -315,20 +315,20 @@ class TestCRUD extends IntegrationTestCase
 
     public function testForceDelete()
     {
-        $post = Post::forceCreateInLocale('de', ['title'  => 'Title DE']);
-        $post->forceSaveTranslation('en', ['title'  => 'Title EN']);
+        $user = User::forceCreateInLocale('de', ['name' => 'John Doe', 'bio'  => 'Bio DE']);
+        $user->forceSaveTranslation('en', ['bio'  => 'Bio EN']);
 
-        $this->assertCount(1, Post::all());
-        $this->assertCount(2, Post::i18nQuery()->get());
+        $this->assertCount(1, User::all());
+        $this->assertCount(2, User::i18nQuery()->get());
 
-        $post->translations()->delete();
+        $user->translations()->delete();
 
-        $this->assertCount(1, Post::all());
-        $this->assertCount(0, Post::i18nQuery()->get());
+        $this->assertCount(1, User::all());
+        $this->assertCount(0, User::i18nQuery()->get());
 
-        $post->forceDelete();
+        $user->forceDelete();
 
-        $this->assertCount(0, Post::all());
-        $this->assertCount(0, Post::i18nQuery()->get());
+        $this->assertCount(0, User::all());
+        $this->assertCount(0, User::i18nQuery()->get());
     }
 }
