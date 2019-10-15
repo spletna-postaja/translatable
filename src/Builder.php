@@ -1,4 +1,6 @@
-<?php namespace Laraplus\Data;
+<?php
+
+namespace Laraplus\Data;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
@@ -17,7 +19,7 @@ class Builder extends EloquentBuilder
         $modelKey = $this->getModel()->getKey();
         $modelKeyName = $this->model->getKeyName();
         $values = $this->addUpdatedAtColumn($values);
-        list($values, $i18nValues) = $this->filterValues($values);
+        [$values, $i18nValues] = $this->filterValues($values);
         $ids = $modelKey ? [$modelKey] : $this->pluck($modelKeyName)->all();
 
         if ($values) {
@@ -72,7 +74,7 @@ class Builder extends EloquentBuilder
      */
     public function insert(array $values)
     {
-        list($values, $i18nValues) = $this->filterValues($values);
+        [$values, $i18nValues] = $this->filterValues($values);
 
         if ($this->query->insert($values)) {
             return $this->insertI18n($i18nValues, $values[$this->model->getKeyName()]);
@@ -91,7 +93,7 @@ class Builder extends EloquentBuilder
      */
     public function insertGetId(array $values, $sequence = null)
     {
-        list($values, $i18nValues) = $this->filterValues($values);
+        [$values, $i18nValues] = $this->filterValues($values);
 
         if ($id = $this->query->insertGetId($values, $sequence)) {
             if ($this->insertI18n($i18nValues, $id)) {
@@ -253,7 +255,7 @@ class Builder extends EloquentBuilder
     }
 
     /**
-     * Get the base query without translations
+     * Get the base query without translations.
      *
      * @return \Illuminate\Database\Query\Builder
      */
