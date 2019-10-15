@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 class TranslationModel extends Eloquent
 {
     /**
-     * Translation model does not include timestamps by default
+     * Translation model does not include timestamps by default.
      *
      * @var boolean
      */
     public $timestamps = false;
 
     /**
-     * Name of the table (will be set dynamically)
+     * Name of the table (will be set dynamically).
      *
      * @var string
      */
@@ -27,6 +27,8 @@ class TranslationModel extends Eloquent
     public $incrementing = false;
 
     /**
+     * Locale key name.
+     *
      * @var string
      */
     protected $localeKey = 'locale';
@@ -34,8 +36,9 @@ class TranslationModel extends Eloquent
     /**
      * Set the keys for a save update query.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param EloquentBuilder $query
+     *
+     * @return EloquentBuilder
      */
     protected function setKeysForSaveQuery(EloquentBuilder $query)
     {
@@ -46,10 +49,14 @@ class TranslationModel extends Eloquent
     }
 
     /**
+     * Set the locale key.
+     *
      * @param $localeKey
+     *
      * @return $this
      */
-    public function setLocaleKey($localeKey) {
+    public function setLocaleKey($localeKey)
+    {
         $this->localeKey = $localeKey;
 
         return $this;

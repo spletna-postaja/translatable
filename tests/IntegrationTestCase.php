@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
 
 abstract class IntegrationTestCase extends TestCase
 {
@@ -69,11 +69,12 @@ abstract class IntegrationTestCase extends TestCase
         $this->schema()->drop('post_tag');
     }
 
-
     /**
      * Get a database connection instance.
      *
-     * @return \Illuminate\Database\Connection
+     * @param string|null $connection
+     *
+     * @return \Illuminate\Database\ConnectionInterface
      */
     protected function connection($connection = 'default')
     {
@@ -81,7 +82,9 @@ abstract class IntegrationTestCase extends TestCase
     }
 
     /**
-     * Get a schema builder instance.
+     * Get a schema builder instance for the connection.
+     *
+     * @param string|null $connection
      *
      * @return \Illuminate\Database\Schema\Builder
      */

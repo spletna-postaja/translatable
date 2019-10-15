@@ -5,22 +5,22 @@ use Exception;
 class TranslatableConfig
 {
     protected static $config = [
-        'locale' => [
-            'current_getter' => null,
+        'locale'      => [
+            'current_getter'  => null,
             'fallback_getter' => null,
         ],
-        'cache' => [
+        'cache'       => [
             'getter' => null,
-            'setter' => null
+            'setter' => null,
         ],
         'db_settings' => [
             'table_suffix' => '_i18n',
-            'locale_field' => 'locale'
+            'locale_field' => 'locale',
         ],
-        'defaults' => [
+        'defaults'    => [
             'only_translated' => false,
-            'with_fallback' => true,
-        ]
+            'with_fallback'   => true,
+        ],
     ];
 
     public static function currentLocaleGetter(callable $current)
@@ -103,7 +103,7 @@ class TranslatableConfig
 
     protected static function checkIfSet($key1, $key2)
     {
-        if(empty(static::$config[$key1][$key2])) {
+        if (empty(static::$config[$key1][$key2])) {
             throw new Exception("Translatable is not configured correctly. Config for [$key1.$key2] is missing.");
         }
     }

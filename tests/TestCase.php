@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 use Laraplus\Data\TranslatableConfig;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 abstract class TestCase extends PHPUnit\Framework\TestCase
 {
@@ -10,23 +10,23 @@ abstract class TestCase extends PHPUnit\Framework\TestCase
         $capsule = new Capsule;
 
         $capsule->addConnection([
-            'driver' => 'sqlite',
+            'driver'   => 'sqlite',
             'database' => ':memory:',
-            'prefix' => ''
+            'prefix'   => ''
         ]);
 
         $capsule->setAsGlobal();
 
         $capsule->bootEloquent();
 
-        TranslatableConfig::currentLocaleGetter(function(){
+        TranslatableConfig::currentLocaleGetter(function () {
             return 'en';
         });
 
-        TranslatableConfig::fallbackLocaleGetter(function(){
+        TranslatableConfig::fallbackLocaleGetter(function () {
             return 'en';
         });
 
-        require_once __DIR__.'/stubs/Post.php';
+        require_once __DIR__ . '/stubs/Post.php';
     }
 }

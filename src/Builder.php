@@ -7,26 +7,24 @@ class Builder extends EloquentBuilder
     /**
      * Update a record in the database.
      *
-     * @param  array  $values
+     * @param array $values
+     *
      * @return int
      */
     public function update(array $values)
     {
         $updated = 0;
-
         $modelKey = $this->getModel()->getKey();
         $modelKeyName = $this->model->getKeyName();
-
         $values = $this->addUpdatedAtColumn($values);
         list($values, $i18nValues) = $this->filterValues($values);
-
         $ids = $modelKey ? [$modelKey] : $this->pluck($modelKeyName)->all();
 
-        if($values) {
+        if ($values) {
             $updated += $this->updateBase($values, $ids);
         }
 
-        if($i18nValues) {
+        if ($i18nValues) {
             $updated += $this->updateI18n($i18nValues, $ids);
         }
 
@@ -36,9 +34,10 @@ class Builder extends EloquentBuilder
     /**
      * Increment a column's value by a given amount.
      *
-     * @param  string  $column
-     * @param  int  $amount
-     * @param  array  $extra
+     * @param string $column
+     * @param int $amount
+     * @param array $extra
+     *
      * @return int
      */
     public function increment($column, $amount = 1, array $extra = [])
@@ -51,9 +50,10 @@ class Builder extends EloquentBuilder
     /**
      * Decrement a column's value by a given amount.
      *
-     * @param  string  $column
-     * @param  int  $amount
-     * @param  array  $extra
+     * @param string $column
+     * @param int $amount
+     * @param array $extra
+     *
      * @return int
      */
     public function decrement($column, $amount = 1, array $extra = [])
@@ -66,31 +66,35 @@ class Builder extends EloquentBuilder
     /**
      * Insert a new record into the database.
      *
-     * @param  array  $values
+     * @param array $values
+     *
      * @return bool
      */
     public function insert(array $values)
     {
         list($values, $i18nValues) = $this->filterValues($values);
 
-        if($this->query->insert($values)) {
+        if ($this->query->insert($values)) {
             return $this->insertI18n($i18nValues, $values[$this->model->getKeyName()]);
         }
+
+        return false;
     }
 
     /**
      * Insert a new record and get the value of the primary key.
      *
-     * @param  array   $values
-     * @param  string  $sequence
+     * @param array $values
+     * @param string $sequence
+     *
      * @return int
      */
     public function insertGetId(array $values, $sequence = null)
     {
         list($values, $i18nValues) = $this->filterValues($values);
 
-        if($id = $this->query->insertGetId($values, $sequence)) {
-            if($this->insertI18n($i18nValues, $id)) {
+        if ($id = $this->query->insertGetId($values, $sequence)) {
+            if ($this->insertI18n($i18nValues, $id)) {
                 return $id;
             }
         }
@@ -126,16 +130,16 @@ class Builder extends EloquentBuilder
      * Filters translatable values from non-translatable.
      *
      * @param array $values
+     *
      * @return array
      */
     protected function filterValues(array $values)
     {
         $attributes = $this->model->translatableAttributes();
-
         $translatable = [];
 
-        foreach($attributes as $key) {
-            if(array_key_exists($key, $values)) {
+        foreach ($attributes as $key) {
+            if (array_key_exists($key, $values)) {
                 $translatable[$key] = $values[$key];
 
                 unset($values[$key]);
@@ -146,13 +150,16 @@ class Builder extends EloquentBuilder
     }
 
     /**
+     * Insert translation.
+     *
      * @param array $values
      * @param mixed $key
+     *
      * @return bool
      */
     protected function insertI18n(array $values, $key)
     {
-        if(count($values) == 0) {
+        if (count($values) == 0) {
             return true;
         }
 
@@ -163,15 +170,17 @@ class Builder extends EloquentBuilder
     }
 
     /**
-     * Update values in base table
+     * Update values in base table.
      *
      * @param array $values
      * @param $ids
+     *
      * @return mixed
      */
     private function updateBase(array $values, array $ids)
     {
-        $query = $this->model->newQuery()
+        $query = $this->model
+            ->newQuery()
             ->whereIn($this->model->getKeyName(), $ids)
             ->getQuery();
 
@@ -179,25 +188,29 @@ class Builder extends EloquentBuilder
     }
 
     /**
+     * Update translations.
+     *
      * @param array $values
      * @param array $ids
+     *
      * @return bool
      */
     protected function updateI18n(array $values, array $ids)
     {
-        if(count($values) == 0) {
+        if (count($values) == 0) {
             return true;
         }
 
         $updated = 0;
 
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             $query = $this->i18nQuery()
                 ->whereOriginal($this->model->getForeignKey(), $id)
                 ->whereOriginal($this->model->getLocaleKey(), $this->model->getLocale());
 
-            if($query->exists()) {
+            if ($query->exists()) {
                 unset($values[$this->model->getLocaleKey()]);
+
                 $updated += $query->update($values);
             } else {
                 $updated += $this->insertI18n($values, $id);
@@ -225,11 +238,13 @@ class Builder extends EloquentBuilder
      * Get the delete query instance for translation table.
      *
      * @param bool $withGlobalScopes
+     *
      * @return \Illuminate\Database\Query\Builder
      */
     protected function i18nDeleteQuery($withGlobalScopes = true)
     {
         $subQuery = $withGlobalScopes ? $this->toBase() : $this->getQuery();
+
         $subQuery->select($this->model->getQualifiedKeyName());
 
         return $this->i18nQuery()->whereIn(

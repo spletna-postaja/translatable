@@ -11,15 +11,15 @@ use Illuminate\Database\Query\Grammars\SQLiteGrammar;
 use Illuminate\Database\Query\Grammars\PostgresGrammar;
 use Illuminate\Database\Query\Grammars\SqlServerGrammar;
 
-
 class QueryBuilder extends Builder
 {
     protected $model;
 
     /**
-     * Set a model instance
+     * Set a model instance.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param Eloquent $model
+     *
      * @return $this
      */
     public function setModel(Eloquent $model)
@@ -32,8 +32,10 @@ class QueryBuilder extends Builder
     /**
      * Set the columns to be selected.
      *
-     * @param  array|mixed  $columns
+     * @param array|mixed $columns
+     *
      * @return $this
+     * @throws \Exception
      */
     public function select($columns = ['*'])
     {
@@ -47,35 +49,39 @@ class QueryBuilder extends Builder
     /**
      * Add a new select column to the query.
      *
-     * @param  array|mixed  $column
+     * @param array|mixed $column
+     *
      * @return $this
+     * @throws \Exception
      */
     public function addSelect($column)
     {
         $column = $this->qualifyColumns(is_array($column) ? $column : func_get_args());
 
-        $this->columns = array_merge((array) $this->columns, $column);
+        $this->columns = array_merge((array)$this->columns, $column);
 
         return $this;
     }
 
     /**
-     * Qualify translated columns
+     * Qualify translated columns.
      *
      * @param $columns
+     *
      * @return mixed
+     * @throws \Exception
      */
     protected function qualifyColumns($columns)
     {
-        foreach($columns as &$column) {
-            if(!in_array($column, $this->model->translatableAttributes())) {
+        foreach ($columns as &$column) {
+            if (!in_array($column, $this->model->translatableAttributes())) {
                 continue;
             }
 
             $primary = $this->qualifyTranslationColumn($column);
             $fallback = $this->qualifyTranslationColumn($column, true);
 
-            if($this->model->shouldFallback()) {
+            if ($this->model->shouldFallback()) {
                 $column = new Expression($this->compileIfNull($primary, $fallback, $column));
             } else {
                 $column = $primary;
@@ -88,13 +94,15 @@ class QueryBuilder extends Builder
     /**
      * Add a where clause to the query.
      *
-     * @param  string|\Closure  $column
-     * @param  string  $operator
-     * @param  mixed   $value
-     * @param  string  $boolean
-     * @return $this
+     * @param string|Closure $column
+     * @param string $operator
+     * @param mixed $value
+     * @param string $boolean
+     * @return Builder|QueryBuilder
      *
      * @throws \InvalidArgumentException
+     *
+     * @throws \Exception
      */
     public function where($column, $operator = null, $value = null, $boolean = 'and')
     {
@@ -108,7 +116,7 @@ class QueryBuilder extends Builder
         // Then we need to check if we are dealing with a translated column and defer
         // to the "whereTranslated" clause in that case. That way the user doesn't
         // need to worry about translated columns and let us handle the details.
-        if(in_array($column, $this->model->translatableAttributes())) {
+        if (in_array($column, $this->model->translatableAttributes())) {
             return $this->whereTranslated($column, $operator, $value, $boolean);
         }
 
@@ -118,11 +126,11 @@ class QueryBuilder extends Builder
     /**
      * Add a where clause to the query and don't modify it for i18n.
      *
-     * @param  string|\Closure  $column
-     * @param  string  $operator
-     * @param  mixed   $value
-     * @param  string  $boolean
-     * @return $this
+     * @param string|Closure $column
+     * @param string $operator
+     * @param mixed $value
+     * @param string $boolean
+     * @return Builder|QueryBuilder
      *
      * @throws \InvalidArgumentException
      */
@@ -134,13 +142,15 @@ class QueryBuilder extends Builder
     /**
      * Add a translation where clause to the query.
      *
-     * @param  string|\Closure  $column
-     * @param  string  $operator
-     * @param  mixed   $value
-     * @param  string  $boolean
+     * @param string|Closure $column
+     * @param string $operator
+     * @param mixed $value
+     * @param string $boolean
+     *
      * @return $this
      *
      * @throws \InvalidArgumentException
+     * @throws \Exception
      */
     public function whereTranslated($column, $operator = null, $value = null, $boolean = 'and')
     {
@@ -156,7 +166,7 @@ class QueryBuilder extends Builder
         // If the given operator is not found in the list of valid operators we will
         // assume that the developer is just short-cutting the '=' operators and
         // we will set the operators to '=' and set the values appropriately.
-        if (! in_array(strtolower($operator), $this->operators, true)) {
+        if (!in_array(strtolower($operator), $this->operators, true)) {
             list($value, $operator) = [$operator, '='];
         }
 
@@ -178,12 +188,14 @@ class QueryBuilder extends Builder
     /**
      * Add a translation or where clause to the query.
      *
-     * @param  string|array|\Closure  $column
-     * @param  string  $operator
-     * @param  mixed   $value
+     * @param string|array|Closure $column
+     * @param string $operator
+     * @param mixed $value
+     *
      * @return $this
      *
      * @throws \InvalidArgumentException
+     * @throws \Exception
      */
     public function orWhereTranslated($column, $operator = null, $value = null)
     {
@@ -194,8 +206,9 @@ class QueryBuilder extends Builder
      * Add a full sub-select to the query.
      *
      * @param string $column
-     * @param \Illuminate\Database\Query\Builder $query
+     * @param Builder $query
      * @param string $boolean
+     *
      * @return $this
      */
     public function whereSubQuery($column, $query, $boolean = 'and')
@@ -203,7 +216,6 @@ class QueryBuilder extends Builder
         list($type, $operator) = ['Sub', 'in'];
 
         $this->wheres[] = compact('type', 'column', 'operator', 'query', 'boolean');
-
         $this->addBinding($query->getBindings(), 'where');
 
         return $this;
@@ -212,13 +224,16 @@ class QueryBuilder extends Builder
     /**
      * Add an "order by" clause by translated column to the query.
      *
-     * @param  string  $column
-     * @param  string  $direction
-     * @return $this
+     * @param string $column
+     * @param string $direction
+     *
+     * @return Builder|QueryBuilder
+     *
+     * @throws \Exception
      */
     public function orderBy($column, $direction = 'asc')
     {
-        if(in_array($column, $this->model->translatableAttributes())) {
+        if (in_array($column, $this->model->translatableAttributes())) {
             return $this->orderByTranslated($column, $direction);
         }
 
@@ -228,9 +243,12 @@ class QueryBuilder extends Builder
     /**
      * Add an "order by" clause by translated column to the query.
      *
-     * @param  string  $column
-     * @param  string  $direction
+     * @param string $column
+     * @param string $direction
+     *
      * @return $this
+     *
+     * @throws \Exception
      */
     public function orderByTranslated($column, $direction = 'asc')
     {
@@ -247,8 +265,11 @@ class QueryBuilder extends Builder
     }
 
     /**
+     * Qualify translation column.
+     *
      * @param $column
      * @param $fallback
+     *
      * @return string
      */
     protected function qualifyTranslationColumn($column, $fallback = false)
@@ -256,7 +277,7 @@ class QueryBuilder extends Builder
         $alias = $this->model->getI18nTable();
         $fallback = $fallback ? '_fallback' : '';
 
-        if(Str::contains($column, '.')) {
+        if (Str::contains($column, '.')) {
             list($table, $field) = explode('.', $column);
             $suffix = $this->model->getTranslationTableSuffix();
 
@@ -269,10 +290,15 @@ class QueryBuilder extends Builder
     }
 
     /**
+     * Compile if null.
+     *
      * @param string $primary
      * @param string $fallback
      * @param string|null $alias
+     *
      * @return string
+     *
+     * @throws \Exception
      */
     public function compileIfNull($primary, $fallback, $alias = null)
     {
@@ -296,7 +322,7 @@ class QueryBuilder extends Builder
     /**
      * Get a new instance of the query builder.
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return Builder
      */
     public function newQuery()
     {
