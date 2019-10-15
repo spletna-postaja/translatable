@@ -312,4 +312,23 @@ class TestCRUD extends IntegrationTestCase
 
         $this->assertCount(1, Tag::has('children')->get());
     }
+
+    public function testForceDelete()
+    {
+        $post = Post::forceCreateInLocale('de', ['title'  => 'Title DE']);
+        $post->forceSaveTranslation('en', ['title'  => 'Title EN']);
+
+        $this->assertCount(1, Post::all());
+        $this->assertCount(2, Post::i18nQuery()->get());
+
+        $post->translations()->delete();
+
+        $this->assertCount(1, Post::all());
+        $this->assertCount(0, Post::i18nQuery()->get());
+
+        $post->forceDelete();
+
+        $this->assertCount(0, Post::all());
+        $this->assertCount(0, Post::i18nQuery()->get());
+    }
 }

@@ -119,7 +119,7 @@ class Builder extends EloquentBuilder
      */
     public function forceDelete()
     {
-        return $this->query->delete() && $this->i18nDeleteQuery(false)->delete();
+        return $this->i18nDeleteQuery(false)->delete() & $this->query->delete();
     }
 
     /**
