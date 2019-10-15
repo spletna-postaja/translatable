@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class IntegrationTestCase extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -56,7 +56,7 @@ abstract class IntegrationTestCase extends TestCase
         });
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

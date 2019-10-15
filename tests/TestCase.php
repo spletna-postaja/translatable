@@ -3,9 +3,9 @@
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Laraplus\Data\TranslatableConfig;
 
-abstract class TestCase extends PHPUnit_Framework_TestCase
+abstract class TestCase extends PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $capsule = new Capsule;
 
