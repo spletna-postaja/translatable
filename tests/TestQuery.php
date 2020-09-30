@@ -97,6 +97,16 @@ class TestQuery extends TestCase
         $this->assertEquals(['de', 'en', 1, 'my title'], $queryOr->getBindings());
     }
 
+    public function testQualifiesTranslatedPropertiesCorrectly()
+    {
+        $this->assertEquals('users_i18n.bio', User::query()->qualifyColumn('bio'));
+    }
+
+    public function testQualifiesUntranslatedPropertiesCorrectly()
+    {
+        $this->assertEquals('users.name', User::query()->qualifyColumn('name'));
+    }
+
     protected function getJoinWithFallbackSql()
     {
         return 'select "posts".*, '.

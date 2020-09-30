@@ -578,4 +578,19 @@ trait Translatable
 
         return parent::syncOriginal();
     }
+
+    /**
+     * Prefix column names with translation table instead of model table
+     * if the given column is translated.
+     * @param $column
+     * @return string
+     */
+    public function qualifyColumn($column)
+    {
+        if (\in_array($column, $this->translatableAttributes(), true)) {
+            return sprintf('%s.%s', $this->getI18nTable(), $column);
+        }
+        return parent::qualifyColumn($column);
+    }
+
 }
