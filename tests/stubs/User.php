@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 use Laraplus\Data\Translatable;
 use Illuminate\Database\Eloquent\Model;
